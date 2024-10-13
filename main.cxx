@@ -1,15 +1,34 @@
 
 #include <iostream>
-int main(int argc, char *argv[]) {
-  std::cout << "I am just a code template, you need to implement the "
-               "functionality you want to use yourself!"
-            << std::endl;
+#include <string>
+#include "argh.h"
 
-  std::cout << "We were passed " << argc
-            << " command line arguments, the first of which was " << argv[0]
-            << std::endl;
-  std::cout << "With a good CLI library, we could use the command line "
-               "arguments to make a useful program."
-            << std::endl;
+//Function that prints the help documentation after running the -h, --help option.
+
+void print_help() {
+  std::cout << "Usage: main [OPTION]... [FILE]...\n"
+            << "Takes some data and does something to it\n"
+            << "Options:\n"
+            << "-h, --help        Show this message and exit\n"
+            << "-a, --All         Some undefined command\n";
+}
+
+//Just testing stuff here. Cmdl includes the CLI arguments.
+//cmdl[0] would give ./main in this case. cmdl[1] would print the first parameter.
+//We use cmdl to find the options that we want for the executable, e.g. if we want a commmand that makes the executable
+//not run a certain part of the program, we can call this -norun and use an if statement to only run a certain
+//part of the program. EASY!
+
+int main(int, char* argv[]) {
+
+  argh::parser cmdl(argv);
+
+  const std::string program_name{cmdl[0]};
+
+  if (cmdl[{ "-h", "--help"}]) {
+    print_help();
+    return 0;
+  }
+
   return 0;
 }
