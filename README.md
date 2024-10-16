@@ -1,6 +1,6 @@
 ### MNXB11-project-EVA (Ellen, Verena & Andreas)
 ## About
-This is the README, duh.
+This is the README, duh. It is for the project done in MNXB11.
 
 ## Overview
 
