@@ -2,7 +2,7 @@ CXX := g++
 CXXWARNINGS := -Wall -Wextra -Werror
 CXXOPT := -O3
 CXXSTD := -std=c++17
-INCLUDES := -I include -I dependencies/argh/
+INCLUDES := -I include -I external/include/
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES)
 LDFLAGS :=
 
