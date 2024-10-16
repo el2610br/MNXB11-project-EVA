@@ -1,8 +1,46 @@
-# MNXB11-project-template
-# About
-This folder contains a skeleton for your project that you can use as
-inspiration. Once you get started, do feel free to go ahead and replace this
-README file with one representing your project.
+### MNXB11-project-EVA (Ellen, Verena & Andreas)
+## About
+This is the README, duh.
+
+## Overview
+
+After building the project, you can run the main executable that the Makefile produces. It takes a path to a CSV file as an argument and a choice of which analysis to run. Only one analysis is actually implemented but there's also an option to persist the raw data extracted from the CSV file. This isn't entirely necessary to do for a project of this size where reading the data takes little time but when working on huge datasets it is often a good idea to have a separate step for extracting the data you actually need from the rest.
+
+## Build instructions
+
+# Build and install the CLI library
+The following commands should be executed from the git root directory.
+
+```
+# Clone the project "HTTPS LINK TO OUR PROJECT"
+# cd into the repository
+cd MNXB11-project-EVA
+
+# Download the external library
+git clone https://github.com/adishavit/argh.git
+
+# Create a directory for the CLI header
+mkdir -pv external/include/
+
+# Copy the header file into the new directory
+cp argh/argh.h external/include/
+
+# Done!
+
+
+
+
+
+```
+
+# Build the project
+
+```
+# In the project directory, make the project
+make
+# Get help from the CLI library 
+./main --help
+```
 
 # Directory structure
 

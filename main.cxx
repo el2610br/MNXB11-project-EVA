@@ -6,11 +6,17 @@
 //Function that prints the help documentation after running the -h, --help option.
 
 void print_help() {
-  std::cout << "Usage: main [OPTION]... [FILE]...\n"
-            << "Takes some data and does something to it\n"
+  std::cout << "Usage: main [OPTION]...\n"
+            << "Takes a file with option -i and performs operations on it.\n"
+            << "\n"
+            << "NOTE!\n"
+            << "The options need an equal sign between the flag and parameter!\n"
+            << "Example:\n"
+            << "main -i=some_file.csv\n"
+            << "\n"
             << "Options:\n"
             << "-h, --help        Show this message and exit\n"
-            << "-a, --All         Some undefined command\n";
+            << "-i, --include     The file to be included\n";
 }
 
 //Just testing stuff here. Cmdl includes the CLI arguments.
@@ -24,10 +30,15 @@ int main(int, char* argv[]) {
   argh::parser cmdl(argv);
 
   const std::string program_name{cmdl[0]};
+  std::string file_name;
 
   if (cmdl[{ "-h", "--help"}]) {
     print_help();
     return 0;
+  }
+
+  if (cmdl({ "-i", "--include"}) >> file_name) {
+    std::cout << "The datafile is " << file_name << std::endl;
   }
 
   return 0;
