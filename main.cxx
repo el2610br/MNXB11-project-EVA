@@ -20,7 +20,7 @@ void print_help() {
             << "-i, --include     The file to be included\n";
 }
 
-int read(std::string file_name){
+int read_csv(std::string file_name){
 
   io::CSVReader<4> in(file_name);
 
@@ -55,7 +55,7 @@ int main(int, char* argv[]) {
 
   if (cmdl({ "-i", "--include"}) >> file_name) {
     std::cout << "The datafile is " << file_name << std::endl;
-    read(file_name);
+    read_csv(file_name);
   }
 
   return 0;
