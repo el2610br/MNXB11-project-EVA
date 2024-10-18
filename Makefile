@@ -4,7 +4,7 @@ CXXOPT := -O3
 CXXSTD := -std=c++17
 INCLUDES := -I include -I external/include/
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES)
-LDFLAGS :=
+LDFLAGS := -Wno-stringop-truncation
 
 .PHONY: all clean
 

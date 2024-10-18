@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "argh.h"
+#include "csv.h"
 
 //Function that prints the help documentation after running the -h, --help option.
 
@@ -17,6 +18,21 @@ void print_help() {
             << "Options:\n"
             << "-h, --help        Show this message and exit\n"
             << "-i, --include     The file to be included\n";
+}
+
+int read_csv(std::string file_name){
+
+  io::CSVReader<4> in(file_name);
+
+  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
+
+  int day; int year; int month; double measurement;
+  while(in.read_row(day, year, month, measurement)){
+    std::cout << day << "," << year << "," << month << "," << measurement << std::endl;
+  }
+
+  return 0;
+
 }
 
 //Just testing stuff here. Cmdl includes the CLI arguments.
@@ -39,6 +55,7 @@ int main(int, char* argv[]) {
 
   if (cmdl({ "-i", "--include"}) >> file_name) {
     std::cout << "The datafile is " << file_name << std::endl;
+    read_csv(file_name);
   }
 
   return 0;
