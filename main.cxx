@@ -4,6 +4,8 @@
 #include "argh.h"
 #include "csv.h"
 #include "date.h"
+#include "DataExtraction.h"
+#include "Analysis.h"
 
 //Function that prints the help documentation after running the -h, --help option.
 
