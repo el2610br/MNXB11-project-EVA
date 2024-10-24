@@ -105,84 +105,8 @@ make
 # Get help from the CLI library 
 ./main --help
 
-#MISSING: Explanation how to implement CLI into main and makefile
-
-```
-After building the CSV library, the header file can be included in the main.cxx file by including the following at the start:
-```
-#include "csv.h"
-```
-In order to analyze a csv file with this library, we can include the following structure:
-```
-int main(){
-  io::CSVReader<3> in("ram.csv");
-  in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
-  std::string vendor; int size; double speed;
-  while(in.read_row(vendor, size, speed)){
-    // do stuff with the data
-  }
-}
-```
-As an example, in order to analyze this data,
-```
-day,year,month,ignoreme,measurement
-1,1998,11,some-text,3.14
-29,2042,2,text with spaces,-3281.1429
-```
-by printing everything except for the ignoreme column, we did the following:
-```
-int read_csv(std::string file_name){
-
-  io::CSVReader<4> in(file_name);
-
-  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
-
-  int day; int year; int month; double measurement;
-  while(in.read_row(day, year, month, measurement)){
-    std::cout << day << "," << year << "," << month << "," << measurement << std::endl;
-  }
-
-  return 0;
-
-}
 ```
 
-After having installed the date library, including the header in the main.cxx can be done by
-
-```
-#include "date.h"
-```
-
-
-
-An example of how to use this library can be seen downbelow, the code has been added on the already existing function read_csv:
-
-```
-int read_csv(std::string file_name){
-  
-  io::CSVReader<4> in(file_name);
-
-  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
-
-  int day; int year; int month; double measurement;
-
-  while(in.read_row(day, year, month, measurement)){
-
-    date::year_month_day date{date::year(year), date::month(month), date::day(day)}; // Here we are creating the combined year_month_day
-
-      if (!date.ok()) {
-          std::cerr << "Invalid date: " << year << "-" << month << "-" << day << std::endl;
-          continue; // This section is checking if the date is accurate and telling you if it is not
-      }
-
-    std::cout << format("%F", date) << "," << measurement << std::endl;
-
-  }
-
-  return 0;
-
-}
-```
 
 
 
