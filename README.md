@@ -105,6 +105,7 @@ make
 # Get help from the CLI library 
 ./main --help
 
+<<<<<<< HEAD
 #MISSING: Explanation how to implement CLI into main and makefile
 
 ```
@@ -147,6 +148,12 @@ int read_csv(std::string file_name){
 }
 ```
 
+=======
+```
+
+
+
+>>>>>>> 937d3d0b48a12f3caa1c8d575ee30d7811386f85
 
 
 # Directory structure
