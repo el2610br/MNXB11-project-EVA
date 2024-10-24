@@ -26,10 +26,24 @@ mkdir -pv external/include/
 cp argh/argh.h external/include/
 
 # Done!
+```
 
+# Build and install the CSV library
+```
+# cd into the repository
+cd MNXB11-project-EVA
 
+# Download the external library 
+# We chose the fast-cpp-csv-parser
+git clone https://github.com/ben-strasser/fast-cpp-csv-parser.git
 
+# If the directory hasn't been created while building the CLI library, then create a directory for the CSV header
+mkdir -pv external/include/
 
+# Copy the header file into the directory
+cp fast-cpp-csv-parser/csv.h external/include/
+
+# Done!
 
 ```
 
@@ -40,6 +54,47 @@ cp argh/argh.h external/include/
 make
 # Get help from the CLI library 
 ./main --help
+
+#MISSING: Explanation how to implement CLI into main and makefile
+
+```
+After building the CSV library, the header file can be included in the main.cxx file by including the following at the start:
+```
+#include "csv.h"
+```
+In order to analyze a csv file with this library, we can include the following structure:
+```
+int main(){
+  io::CSVReader<3> in("ram.csv");
+  in.read_header(io::ignore_extra_column, "vendor", "size", "speed");
+  std::string vendor; int size; double speed;
+  while(in.read_row(vendor, size, speed)){
+    // do stuff with the data
+  }
+}
+```
+As an example, in order to analyze this data,
+```
+day,year,month,ignoreme,measurement
+1,1998,11,some-text,3.14
+29,2042,2,text with spaces,-3281.1429
+```
+by printing everything except for the ignoreme column, we did the following:
+```
+int read_csv(std::string file_name){
+
+  io::CSVReader<4> in(file_name);
+
+  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
+
+  int day; int year; int month; double measurement;
+  while(in.read_row(day, year, month, measurement)){
+    std::cout << day << "," << year << "," << month << "," << measurement << std::endl;
+  }
+
+  return 0;
+
+}
 ```
 
 # Directory structure
