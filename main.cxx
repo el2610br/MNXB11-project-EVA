@@ -3,6 +3,7 @@
 #include <string>
 #include "argh.h"
 #include "csv.h"
+#include "date.h"
 
 //Function that prints the help documentation after running the -h, --help option.
 
@@ -27,13 +28,25 @@ int read_csv(std::string file_name){
   in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
 
   int day; int year; int month; double measurement;
+
   while(in.read_row(day, year, month, measurement)){
-    std::cout << day << "," << year << "," << month << "," << measurement << std::endl;
+
+    date::year_month_day date{date::year(year), date::month(month), date::day(day)};
+
+      if (!date.ok()) {
+          std::cerr << "Invalid date: " << year << "-" << month << "-" << day << std::endl;
+          continue; // Skip to the next row
+      }
+
+    std::cout << format("%F", date) << "," << measurement << std::endl;
+
   }
 
   return 0;
 
 }
+
+
 
 //Just testing stuff here. Cmdl includes the CLI arguments.
 //cmdl[0] would give ./main in this case. cmdl[1] would print the first parameter.
