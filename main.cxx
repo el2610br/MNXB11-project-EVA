@@ -1,11 +1,4 @@
-
-#include <iostream>
-#include <string>
-#include "argh.h"
-#include "csv.h"
-#include "date.h"
 #include "DataExtraction.h"
-#include "Analysis.h"
 
 //Function that prints the help documentation after running the -h, --help option.
 
@@ -38,6 +31,7 @@ int main(int, char* argv[]) {
 
   if (cmdl({ "-i", "--include"}) >> file_name) {
     std::cout << "The datafile is " << file_name << std::endl;
+    read_csv(file_name);
   } 
   else {
     std::cout << "The executable requires a datafile. Please include -i=<your_file>" << std::endl;

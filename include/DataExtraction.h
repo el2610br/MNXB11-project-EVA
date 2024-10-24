@@ -9,6 +9,14 @@
 #include <vector>
 
 #include "Measurement.h"
+#include "date.h"
+#include "argh.h"
+#include "csv.h"
+#include "date.h"
+#include "DataExtraction.h"
+#include "Analysis.h"
+
+int read_csv(std::string file_name);
 
 // Read measurement objects from a CSV file with name given by csv_filename
 // parameter. Invalid measurements are ignored but give a warning.
