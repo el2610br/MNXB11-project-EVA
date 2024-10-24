@@ -2,10 +2,9 @@ CXX := g++
 CXXWARNINGS := -Wall -Wextra -Werror
 CXXOPT := -O3
 CXXSTD := -std=c++17
-INCLUDES := -I include -I external/include/ $(shell root-config --incdir)
+INCLUDES := -I include -I external/include/ `root-config --incdir`
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES)
-LDFLAGS := -Wno-stringop-truncation
-GLIBS  = $(shell root-config --glibs)
+LDFLAGS := -Wno-stringop-truncation `root-config --glibs`
 
 .PHONY: all clean
 
