@@ -44,6 +44,38 @@ mkdir -pv external/include/
 cp fast-cpp-csv-parser/csv.h external/include/
 
 # Done!
+```
+
+# Build and install the fmt library
+```
+# cd into the repository
+cd MNXB11-project-EVA
+
+# Create a folder called "dependencies" and enter it, to store our library
+mkdir dependencies
+cd dependencies
+
+# Download the fmt library
+git clone https://github.com/fmtlib/fmt.git
+
+# If the directory hasn't been created while building the CLI library, then create a directory for the CSV header
+mkdir -pv external/include/
+
+# Also create a directory called "build" in the MNXB11-project-EVA 
+# Create a directory called fmt inside of it
+mkdir -pv build/fmt
+
+# Enter the build/fmt directory
+cd build/fmt
+
+# Run the configuration step, specifying your username
+cmake /home/username/git/MNXB11-project-EVA/dependencies/fmt -DCMAKE_INSTALL_PREFIX=~/git/MNXB11-project-EVA/external
+
+# To build the library, run "make" and "make install"
+make
+make install
+
+#Done!
 
 ```
 
@@ -114,44 +146,6 @@ int read_csv(std::string file_name){
 
 }
 ```
-
-After having installed the date library, including the header in the main.cxx can be done by
-
-```
-#include "date.h"
-```
-
-
-
-An example of how to use this library can be seen downbelow, the code has been added on the already existing function read_csv:
-
-```
-int read_csv(std::string file_name){
-  
-  io::CSVReader<4> in(file_name);
-
-  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
-
-  int day; int year; int month; double measurement;
-
-  while(in.read_row(day, year, month, measurement)){
-
-    date::year_month_day date{date::year(year), date::month(month), date::day(day)}; // Here we are creating the combined year_month_day
-
-      if (!date.ok()) {
-          std::cerr << "Invalid date: " << year << "-" << month << "-" << day << std::endl;
-          continue; // This section is checking if the date is accurate and telling you if it is not
-      }
-
-    std::cout << format("%F", date) << "," << measurement << std::endl;
-
-  }
-
-  return 0;
-
-}
-```
-
 
 
 

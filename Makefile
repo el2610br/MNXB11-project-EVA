@@ -4,7 +4,8 @@ CXXOPT := -O3
 CXXSTD := -std=c++17
 INCLUDES := -I include -I external/include/ `root-config --incdir`
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES)
-LDFLAGS := -Wno-stringop-truncation `root-config --glibs`
+
+LDFLAGS := -Wno-stringop-truncation -Lexternal/lib64 -lfmt `root-config --glibs`
 
 .PHONY: all clean
 
