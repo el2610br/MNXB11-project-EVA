@@ -21,38 +21,6 @@ void print_help() {
             << "-i, --include     The file to be included\n";
 }
 
-int read_csv(std::string file_name){
-
-  io::CSVReader<4> in(file_name);
-
-  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
-
-  int day; int year; int month; double measurement;
-
-  while(in.read_row(day, year, month, measurement)){
-
-    date::year_month_day date{date::year(year), date::month(month), date::day(day)};
-
-      if (!date.ok()) {
-          std::cerr << "Invalid date: " << year << "-" << month << "-" << day << std::endl;
-          continue; // Skip to the next row
-      }
-
-    std::cout << format("%F", date) << "," << measurement << std::endl;
-
-  }
-
-  return 0;
-
-}
-
-
-
-//Just testing stuff here. Cmdl includes the CLI arguments.
-//cmdl[0] would give ./main in this case. cmdl[1] would print the first parameter.
-//We use cmdl to find the options that we want for the executable, e.g. if we want a commmand that makes the executable
-//not run a certain part of the program, we can call this -norun and use an if statement to only run a certain
-//part of the program. EASY!
 
 int main(int, char* argv[]) {
 
@@ -68,7 +36,38 @@ int main(int, char* argv[]) {
 
   if (cmdl({ "-i", "--include"}) >> file_name) {
     std::cout << "The datafile is " << file_name << std::endl;
-    read_csv(file_name);
+  } 
+  else {
+    std::cout << "The executable requires a datafile. Please include -i=<your_file>" << std::endl;
+    return 0;
+  }
+
+  int analysis_choice{};
+  if (cmdl({ "-a", "--analysis"}) >> analysis_choice) {
+    if (!(analysis_choice >= 0 && analysis_choice <= 3)) {
+      std::cout << "The analysis parameter needs to be one of 0,1,2,3. Call --help for detailed description." << std::endl;
+      }
+    } 
+  else {
+    std::cout << "The executable requires an analysis choice. Please include -a=<n> where n = 0,1,2,3." << std::endl;
+    return 0;
+  }
+
+  switch(analysis_choice) {
+    case 0:
+      // The case where we don't specify analysis
+      break;
+    case 1:
+      // Analysis 1
+      break;
+    case 2:
+      // Analysis 2
+      break;
+    case 3:
+      // Analysis 3
+      break;
+
+
   }
 
   return 0;
