@@ -47,6 +47,24 @@ cp fast-cpp-csv-parser/csv.h external/include/
 
 ```
 
+# Build and install the Date library
+```
+# cd into the correct repository
+cd MNXB11-project-EVA
+
+# Download the date library
+git clone https://github.com/HowardHinnant/date.git
+
+# If the directory hasn't been created while building the CLI library and CSV library, then create a directory for the date header
+mkdir -pv external/include/
+
+# Copy the header file into the directory
+cp date/date.h external/include/
+
+# Now it's installed!
+
+```
+
 # Build the project
 
 ```
@@ -96,6 +114,46 @@ int read_csv(std::string file_name){
 
 }
 ```
+
+After having installed the date library, including the header in the main.cxx can be done by
+
+```
+#include "date.h"
+```
+
+
+
+An example of how to use this library can be seen downbelow, the code has been added on the already existing function read_csv:
+
+```
+int read_csv(std::string file_name){
+  
+  io::CSVReader<4> in(file_name);
+
+  in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
+
+  int day; int year; int month; double measurement;
+
+  while(in.read_row(day, year, month, measurement)){
+
+    date::year_month_day date{date::year(year), date::month(month), date::day(day)}; // Here we are creating the combined year_month_day
+
+      if (!date.ok()) {
+          std::cerr << "Invalid date: " << year << "-" << month << "-" << day << std::endl;
+          continue; // This section is checking if the date is accurate and telling you if it is not
+      }
+
+    std::cout << format("%F", date) << "," << measurement << std::endl;
+
+  }
+
+  return 0;
+
+}
+```
+
+
+
 
 # Directory structure
 
