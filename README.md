@@ -1,6 +1,6 @@
 ### MNXB11-project-EVA (Ellen, Verena & Andreas)
 ## About
-This is the README, duh. It is for the project done in MNXB11 in 2024 by the lovely group EVA!
+It is for the project done in MNXB11 in 2024 by the lovely group EVA!
 
 ## Overview
 
@@ -58,7 +58,7 @@ cd dependencies
 # Download the fmt library
 git clone https://github.com/fmtlib/fmt.git
 
-# If the directory hasn't been created while building the CLI library, then create a directory for the CSV header
+# If the directory hasn't been created while building the CLI library, then create a directory for the CSV header, inside the MNXB11-project-EVA directory
 mkdir -pv external/include/
 
 # Also create a directory called "build" in the MNXB11-project-EVA 
@@ -91,7 +91,8 @@ git clone https://github.com/HowardHinnant/date.git
 mkdir -pv external/include/
 
 # Copy the header file into the directory
-cp date/date.h external/include/
+cp ~/git/MNXB11-project-EVA/dependencies/date/include/date/date.h ~/git/MNXB11-project-EVA/external/include/
+
 
 # Now it's installed!
 
