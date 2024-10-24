@@ -1,6 +1,6 @@
 ### MNXB11-project-EVA (Ellen, Verena & Andreas)
 ## About
-This is the README, duh. It is for the project done in MNXB11 in 2024 by the lovely group EVA!
+It is for the project done in MNXB11 in 2024 by the lovely group EVA!
 
 ## Overview
 
