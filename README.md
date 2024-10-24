@@ -44,6 +44,38 @@ mkdir -pv external/include/
 cp fast-cpp-csv-parser/csv.h external/include/
 
 # Done!
+```
+
+# Build and install the fmt library
+```
+# cd into the repository
+cd MNXB11-project-EVA
+
+# Create a folder called "dependencies" and enter it, to store our library
+mkdir dependencies
+cd dependencies
+
+# Download the fmt library
+git clone https://github.com/fmtlib/fmt.git
+
+# If the directory hasn't been created while building the CLI library, then create a directory for the CSV header
+mkdir -pv external/include/
+
+# Also create a directory called "build" in the MNXB11-project-EVA 
+# Create a directory called fmt inside of it
+mkdir -pv build/fmt
+
+# Enter the build/fmt directory
+cd build/fmt
+
+# Run the configuration step, specifying your username
+cmake /home/username/git/MNXB11-project-EVA/dependencies/fmt -DCMAKE_INSTALL_PREFIX=~/git/MNXB11-project-EVA/external
+
+# To build the library, run "make" and "make install"
+make
+make install
+
+#Done!
 
 ```
 
@@ -96,6 +128,8 @@ int read_csv(std::string file_name){
 
 }
 ```
+
+
 
 # Directory structure
 

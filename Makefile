@@ -6,6 +6,9 @@ INCLUDES := -I include -I external/include/
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES)
 LDFLAGS := -Wno-stringop-truncation
 
+# Linker flags: linking fmt from external/lib64 and ignoring stringop truncation warning
+LDFLAGS := -Wno-stringop-truncation -Lexternal/lib64 -lfmt
+
 .PHONY: all clean
 
 all: main
