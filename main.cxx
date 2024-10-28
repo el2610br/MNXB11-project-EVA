@@ -45,9 +45,13 @@ int main(int, char* argv[]) {
     data = read_csv(file_name);
 
     //How to get the date, time and temperature from the 0th element
-    //data[0].get_date();
-    //data[0].get_time();
-    //data[0].get_temperature();
+    //data[0].get_date(); // 2023-02-12
+    //data[0].get_time(); // 13:00:00
+    //data[0].get_temperature(); // 21.9
+    //date::year_month_day date = data[i].get_data();
+    //int y = date.get_year();
+    //int m = date.get_month(); 
+    //int d = date.get_day();
 
   } else {
     std::cout << "The executable requires a datafile. Please include -i=<your_file>" << std::endl;
