@@ -9,20 +9,16 @@
 #include <vector>
 
 #include "Measurement.h"
-#include "date.h"
-#include "argh.h"
-#include "csv.h"
-#include "date.h"
-#include "DataExtraction.h"
-#include "Analysis.h"
-
-int read_csv(std::string file_name);
-
-std::string cleaning(std::string file_name);
 
 // Read measurement objects from a CSV file with name given by csv_filename
 // parameter. Invalid measurements are ignored but give a warning.
-std::vector<Measurement> read_measurements(const std::string& csv_filename);
+std::vector<Measurement> read_csv(std::string file_name);
+
+
+std::string cleaning(std::string file_name);
+
+//Removes the files created from running the cleaning function
+void directory_cleaning(std::string file_name);
 
 // Write measurements to a ROOT file with filename given by output_filename.
 // Results will be stored in a TTree with name "MNXB11" into branches:

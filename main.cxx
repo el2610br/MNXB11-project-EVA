@@ -3,17 +3,21 @@
 //Function that prints the help documentation after running the -h, --help option.
 
 void print_help() {
+  //Prints help documentation
   std::cout << "Usage: main [OPTION]...\n"
             << "Takes a file with option -i and performs operations on it.\n"
             << "\n"
             << "NOTE!\n"
             << "The options need an equal sign between the flag and parameter!\n"
             << "Example:\n"
-            << "main -i=some_file.csv\n"
+            << "main -i=some_file.csv -a=2\n"
             << "\n"
             << "Options:\n"
             << "-h, --help        Show this message and exit\n"
-            << "-i, --include     The file to be included\n";
+            << "-i, --include     The file to be included\n"
+            << "                  The csv files have to be located in 'datasets/' in the project directory\n"
+            << "-a, --analysis    The option for analysis\n"
+            << "                  Has to be an integer n, n=0,1,2,3\n";
 }
 
 
@@ -35,9 +39,17 @@ int main(int, char* argv[]) {
     file_name = cleaning(file_name);
     std::cout << "The file name: " << file_name << std::endl;
 
-    read_csv(file_name);
-  } 
-  else {
+    //Declare our data vector
+    std::vector<Measurement> data;
+    //Get the data from the raw datafile and add it to the data vector
+    data = read_csv(file_name);
+
+    //How to get the date, time and temperature from the 0th element
+    //data[0].get_date();
+    //data[0].get_time();
+    //data[0].get_temperature();
+
+  } else {
     std::cout << "The executable requires a datafile. Please include -i=<your_file>" << std::endl;
     return 0;
   }
@@ -47,8 +59,7 @@ int main(int, char* argv[]) {
     if (!(analysis_choice >= 0 && analysis_choice <= 3)) {
       std::cout << "The analysis parameter needs to be one of 0,1,2,3. Call --help for detailed description." << std::endl;
       }
-    } 
-  else {
+    } else {
     std::cout << "The executable requires an analysis choice. Please include -a=<n> where n = 0,1,2,3." << std::endl;
     return 0;
   }
@@ -69,6 +80,8 @@ int main(int, char* argv[]) {
 
 
   }
+
+  directory_cleaning(file_name);
 
   return 0;
 }
