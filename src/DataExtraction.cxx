@@ -1,5 +1,26 @@
 #include "DataExtraction.h"
 
+
+
+
+int cleaning(std::string file_name){
+  const char* path_to_script = "~/git/MNXB11-project-EVA/datasets/smhicleaner.sh";
+  const char* path_to_file = "~/git/MNXB11-project-EVA/datasets/";
+
+  std::string combined = std::string(path_to_script) + " " + std::string(path_to_file) + file_name;
+  // std::string combined = std::string(path_to_script) + " " + file_name + path_to_file; 
+
+  const char* cleaner_path = combined.c_str(); 
+
+  int result = system(cleaner_path);
+
+  return result;
+
+}
+
+
+
+
 int read_csv(std::string file_name){
 
   io::CSVReader<4> in(file_name);
@@ -24,6 +45,8 @@ int read_csv(std::string file_name){
   return 0;
 
 }
+
+/*
 
 std::vector<Measurement> read_measurements(const std::string& filename) {
   // This code is WRONG! Can you spot the problems? It isn't easy, which is why
@@ -77,3 +100,5 @@ void persist_measurements(const std::vector<Measurement>& measurements,
   }
   tree.Write();
 }
+
+*/
