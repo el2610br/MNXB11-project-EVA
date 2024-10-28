@@ -8,3 +8,11 @@
 2024-10-24 16:59 Verena
 
         Copied the demo version for the Analysis.cxx and Analysis.h files, to be modified to our demands later.
+
+2024-10-28 11:11
+   
+        Added the cleaning function that calls the smhicleaner, as well as adding the smhicleaner.sh 
+
+2024-10-28 12:52
+
+        Fixed some errors with the DataExtraction.cxx and added the calling of the cleaning function in main.cxx

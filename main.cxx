@@ -31,6 +31,10 @@ int main(int, char* argv[]) {
 
   if (cmdl({ "-i", "--include"}) >> file_name) {
     std::cout << "The datafile is " << file_name << std::endl;
+
+    file_name = cleaning(file_name);
+    std::cout << "The file name: " << file_name << std::endl;
+
     read_csv(file_name);
   } 
   else {

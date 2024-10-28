@@ -18,6 +18,8 @@
 
 int read_csv(std::string file_name);
 
+std::string cleaning(std::string file_name);
+
 // Read measurement objects from a CSV file with name given by csv_filename
 // parameter. Invalid measurements are ignored but give a warning.
 std::vector<Measurement> read_measurements(const std::string& csv_filename);
