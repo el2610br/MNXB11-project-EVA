@@ -2,5 +2,9 @@
 2024-10-24 16:17 Andreas
 
         Cleaned up the main.cxx file by moving the read_csv function to DataExtraction.cxx.
-        Added if statements to the options, incase a user doesn't use the correct option parameter.
+        Added if statements to the options, in case a user doesn't use the correct option parameter.
         Added cases for later analysis.
+
+2024-10-24 16:59 Verena
+
+        Copied the demo version for the Analysis.cxx and Analysis.h files, to be modified to our demands later.
