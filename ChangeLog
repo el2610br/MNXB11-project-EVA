@@ -12,3 +12,11 @@
 2024-10-28 11:10 Verena
 
         Modified the demo version of Analysis.cxx to analyse our data, that is however still untested and uncleaned. Updated the names of the variables. Using date.h to try changing the format of YYYY-MM-DD to numbers from 1 to 365. Implemented formulas to calculate mean temperature and errors. Should produce a histogram.
+
+2024-10-28 11:11 Ellen
+   
+        Added the cleaning function that calls the smhicleaner, as well as adding the smhicleaner.sh 
+
+2024-10-28 12:52 Ellen
+
+        Fixed some errors with the DataExtraction.cxx and added the calling of the cleaning function in main.cxx

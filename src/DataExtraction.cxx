@@ -4,18 +4,18 @@
 
 
 
-int cleaning(std::string file_name){
-  const char* path_to_script = "~/git/MNXB11-project-EVA/datasets/smhicleaner.sh";
-  const char* path_to_file = "~/git/MNXB11-project-EVA/datasets/";
+std::string cleaning(std::string file_name){
+  const char* path = "~/git/MNXB11-project-EVA/datasets/smhicleaner.sh ~/git/MNXB11-project-EVA/datasets/";
 
-  std::string combined = std::string(path_to_script) + " " + std::string(path_to_file) + file_name;
-  // std::string combined = std::string(path_to_script) + " " + file_name + path_to_file; 
+  std::string combined = std::string(path) + file_name + " > /dev/null 2>&1";
 
   const char* cleaner_path = combined.c_str(); 
 
-  int result = system(cleaner_path);
+  system(cleaner_path);
 
-  return result;
+  std::string new_string= "baredata_" + file_name;
+
+  return new_string;
 
 }
 

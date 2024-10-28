@@ -159,4 +159,4 @@ STARTLINE=$(( $STARTLINE + 1 ))
 # - Fix format for the "strange" lines with comments (cut)
 # - Convert format to spaces instead of commas (sed)
 log "Perform cleanup and give the output directly"
-tail -n +$STARTLINE $CLEANER_ORIGINALFILENAME | cut -d';' -f 1,2,3,4,5 | sed 's/;/ /g'
+tail -n +$STARTLINE $CLEANER_ORIGINALFILENAME | cut -d';' -f 1,2,3,4,5 | sed 's/;/ /g' > $CLEANER_BAREDATAFILENAME
