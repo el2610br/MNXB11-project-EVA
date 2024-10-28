@@ -20,3 +20,15 @@
 2024-10-28 12:52 Ellen
 
         Fixed some errors with the DataExtraction.cxx and added the calling of the cleaning function in main.cxx
+
+2024-10-28 16:39 Andreas
+
+        Changed the read_csv function to read the csv file that we want and change it into raw data that is stored in
+        a vector called data in main. The data vector has elements that are of the Measurement class that stores three variables: date, time and temperature. They can be retrieved with 
+        data[0].get_date();
+        data[0].get_time();
+        data[0].get_temperature();
+        
+        Changed the Measurement class by adding validation checks and fixing errors.
+
+        Added a directory_cleaning() function that removes the new data files created by the cleaning() function.
