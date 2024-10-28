@@ -26,8 +26,6 @@ int read_csv(std::string file_name){
 
     std::vector<Measurement> measurements;
 
-    std::cout << measurements << std::endl;
-
     io::CSVReader<4> in(file_name);
     in.read_header(io::ignore_extra_column, "day", "year", "month", "measurement");
 
@@ -39,10 +37,12 @@ int read_csv(std::string file_name){
 
         if (!date.ok()) {
             std::cerr << "Invalid date: " << year << "-" << month << "-" << day << std::endl;
-            continue; // Skip to the next row
+            continue; 
         }
 
         std::cout << format("%F", date) << "," << measurement << std::endl;
+
+      }
 
   return 0;
 
