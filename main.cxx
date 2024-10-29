@@ -1,4 +1,6 @@
 #include "DataExtraction.h"
+#include "Analysis.h"
+#include "Measurement.h"
 
 //Function that prints the help documentation after running the -h, --help option.
 
@@ -28,6 +30,9 @@ int main(int, char* argv[]) {
   const std::string program_name{cmdl[0]};
   std::string file_name;
 
+  //Declare our data vector
+  std::vector<Measurement> data;
+
   if (cmdl[{ "-h", "--help"}]) {
     print_help();
     return 0;
@@ -39,8 +44,6 @@ int main(int, char* argv[]) {
     file_name = cleaning(file_name);
     std::cout << "The file name: " << file_name << std::endl;
 
-    //Declare our data vector
-    std::vector<Measurement> data;
     //Get the data from the raw datafile and add it to the data vector
     data = read_csv(file_name);
 
@@ -68,20 +71,27 @@ int main(int, char* argv[]) {
     return 0;
   }
 
+
   switch(analysis_choice) {
-    case 0:
+    case 0: {
       // The case where we don't specify analysis
       break;
-    case 1:
+    }
+    case 1: {
       // Analysis 1
       break;
-    case 2:
+    }
+    case 2: {
       // Analysis 2
+      //Create an output data file
+      std::string name = "warmest_coldest.root";
+      warmest_coldest_over_a_year(data, name);
       break;
-    case 3:
+    }
+    case 3: {
       // Analysis 3
       break;
-
+    }
 
   }
 
