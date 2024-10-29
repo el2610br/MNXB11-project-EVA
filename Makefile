@@ -5,7 +5,8 @@ CXXSTD := -std=c++17
 INCLUDES := -I include -I external/include/ -I `root-config --incdir`
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES)
 
-LDFLAGS := -Wno-stringop-truncation -Lexternal/lib64 -lfmt `root-config --glibs`
+LDFLAGS := -Wno-stringop-truncation -Lexternal/lib64 -lfmt `root-config --glibs` -lstdc++
+STRNGOP := -Wno-stringop-truncation
 
 .PHONY: all clean
 
@@ -17,11 +18,12 @@ all: main
 #
 # Remove the Example object file when you are done looking at it, it doesn't
 # contribute to the executable!
-main: main.cxx src/DataExtraction.cxx src/Measurement.cxx #src/Analysis
+
+main: main.cxx src/Measurement.o src/Analysis.o src/DataExtraction.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 src/%.o: src/%.cxx
-	$(CXX) $(CXXFLAGS) $^ -c -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@ $(STRNGOP)
 
 clean:
 	rm -v src/*.o main

@@ -1,4 +1,5 @@
 #include "DataExtraction.h"
+#include "Measurement.h"
 #include "date.h"
 
 std::string cleaning(std::string file_name){

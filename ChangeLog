@@ -32,3 +32,11 @@
         Changed the Measurement class by adding validation checks and fixing errors.
 
         Added a directory_cleaning() function that removes the new data files created by the cleaning() function.
+
+2024-10-28 15:00 Andreas
+
+        Fixed the Makefile to include the .o files.
+        Added scopes for the switch/case function in main.cxx.
+
+        Added a second analysis that finds the warmest and coldest days of each year, draws it on a canvas
+        with a histogram and saves it in a png.
