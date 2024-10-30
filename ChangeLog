@@ -40,3 +40,7 @@
 
         Added a second analysis that finds the warmest and coldest days of each year, draws it on a canvas
         with a histogram and saves it in a png.
+
+2024-10-30 20:30 Verena
+
+        Fixed the mean temperature over a year analysis, producing the same plot as was given to us. Calling the function in main.cxx and Analysis.h now. Using Root to create the histogram. Fixed the fact, that no histogram was produced in the earlier version by creating TCanvas. Included the same temperature and date validation as Andreas.
