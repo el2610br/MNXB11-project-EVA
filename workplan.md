@@ -33,7 +33,7 @@ We want three analyses with their respective plots:
 
 2. The warmest and coldest day of each year
 
-3. Something
+3. The number of days with temperatures above 25 degrees in a year for each year
 
 # 3. Plotting
 We use ROOT to plot figures.

@@ -63,8 +63,12 @@
 
         Adding the zero case in main.cxx, where it is doing all the analysises. Cleaning up in Dataextraction.cxx and annotating the cleaning function. 
 
-2024-10-30 16:50 Verena
+2024-10-31 16:50 Verena
 
         Analysis 1: annotated the code, changed the colors in the plot, disabled the statistics box. Fixed the degree Celcius display in the y-axis label.
 
         Analysis 2: Added a Gaussian fitting function. Works fo the warm days, but for the cold days, the interval determination does not work, so it is not included. Added a legend to the plot. Removed the filled_histogram_with_vector function as it was not needed.
+
+2024-10-31 19:02 Ellen
+
+        Changed the workplan.md and added us as authors in AUTHHORS.
