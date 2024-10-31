@@ -6,29 +6,42 @@
 #include <TH1D.h>
 #include <TCanvas.h>
 
+#include <fstream>
+#include <sstream>
+#include <unordered_map>
+#include <string>
+#include <vector>
+#include <cmath>
+#include <TF1.h>
+#include <TMath.h>
+#include <TLegend.h>
+
 
 //Creating a histogram to plot the mean temperature over a year
 void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::string& output_filename) {
 
   TFile output_file{output_filename.c_str(), "RECREATE"};
   
-  TH1D* meantemp_histogram{new TH1D{"meantemp_histogram", "Mean Daily Temperature over a Year;Day of Year;Temperature [°C]", 365, 0, 366}};
+  TH1D* meantemp_histogram{new TH1D{"meantemp_histogram", "Mean Daily Temperature over a Year;Day of Year;Temperature [#circC]", 365, 0, 366}};
 
-  //Create arrays to store data
+  //Create vectors to store data
   std::vector<double> daily_temp_sum(365, 0); //to store the sum of the temps each day
   std::vector<int> daily_temp_count(365,0); //the number of temperature measurements for each day
   //we need to divide our daily_temp_sum by the daily_temp_count to get the mean temperature
   
-  std::vector<int> daily_temp_sum_sq(365, 0);
+  std::vector<int> daily_temp_sum_sq(365, 0); //to calculate the 
 
   for (const auto& measurement : data) {
     
-    //conversion of "YYYY-MM-DD" to numbers from 1 to 365 (does not account for leap years, I think)
-    std::string date_str = date::format("%F", measurement.get_date());
-    std::istringstream in(date_str.c_str());
-    date::year_month_day ymd;
-    in >> date::parse("%F", ymd);
-    int day_of_year = (date::sys_days{ymd} - date::sys_days{date::year{ymd.year()}/1/1}).count();
+    //conversion of "YYYY-MM-DD" to numbers from 1 to 365 for the days
+    std::string date_str = date::format("%F", measurement.get_date()); //converts date into a string
+    std::istringstream in(date_str.c_str()); //converts string to C-style string, which istringstream takes as input
+    date::year_month_day ymd; //year_month_day is from date library, it will save it as year, month and day separately
+    in >> date::parse("%F", ymd); //parses the input stream "in" into ymd
+    //if we had before "2024-10-01" then ymd will be "year=2024", "month=10", "day=01"
+
+    //this is the actual calculation to go from 1 to 365
+    int day_of_year = (date::sys_days{ymd} - date::sys_days{date::year{ymd.year()}/1/1}).count(); 
     
     //Check that the date is valid
     if (day_of_year < 0 || day_of_year > 365) {
@@ -42,46 +55,55 @@ void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::stri
       continue;
     }    
     
+    // initialize the temperature values and add them to the created vectors
     double temp = measurement.get_temperature();  
-    daily_temp_sum[day_of_year] += temp;
+    daily_temp_sum[day_of_year] += temp; //for each day of the year it adds all the temperatures
     daily_temp_sum_sq[day_of_year] += temp * temp;
     daily_temp_count[day_of_year] += 1;     
   
 
   for (int day = 0; day < 365; ++day) {
     if (daily_temp_count[day] > 0) {
+      //compute the means by dividing by the count
       double mean_temperature = daily_temp_sum[day] / daily_temp_count[day];
       double mean_temp_sq = daily_temp_sum_sq[day] / daily_temp_count[day];
+      //variance and standard deviation
       double variance = mean_temp_sq - mean_temperature * mean_temperature;
-      double stddev = (variance > 0) ? std::sqrt(variance) : 0;
+      double stddev = (variance > 0) ? std::sqrt(variance) : 0; //only computes the standard deviation if variance bigger than zero
 
-      meantemp_histogram->SetBinContent(day + 1, mean_temperature); // +1 to match ROOT's 1-based bin indexing
-      meantemp_histogram->SetBinError(day + 1, stddev); // Set standard deviation as the error    
+      meantemp_histogram->SetBinContent(day + 1, mean_temperature); // bin counting starts at 1 in root
+      meantemp_histogram->SetBinError(day + 1, stddev); // standard deviation is the bin error for each bin    
     }
   }
   }
+
+  // Customize histogram colors
+  meantemp_histogram->SetLineColor(kCyan-2); // Set mean temperature line color to red
+  meantemp_histogram->SetMarkerColor(kBlue-2); // Set marker color for the mean temperature
+  meantemp_histogram->SetMarkerStyle(21); // Set marker style
+  meantemp_histogram->SetMarkerSize(0.8);
   
+  meantemp_histogram->SetStats(0); // Disable the statistics box
+  
+  //initializes the canvas to put the plot onto
   TCanvas* canvas = new TCanvas("mean_temp_canvas", "Mean temperature over a year", 800, 600);
   meantemp_histogram->Draw();
 
-  canvas->SaveAs("mean_temperature_over_a_year.png"); // Save as PNG
+  // Save the histogram as png
+  canvas->SaveAs("mean_temperature_over_a_year.png"); 
 
   //Clean up
   delete canvas;
 
   //Closes the output file
-  //output_file.Write();
   output_file.Close();
   
 }
 
-
-
-
-void fill_histogram_with_vector(TH1D* histogram, const std::vector<double>& data_vector) {
-    for (double value : data_vector) {
-        histogram->Fill(value); // Fill histogram with each value from the vector
-    }
+//Analysis 2
+// Define the Gaussian function 
+double Gaussian(double* x, double* par) {
+  return par[0] * TMath::Exp(-0.5 * (x[0] - par[1]) * (x[0] - par[1]) / (par[2] * par[2]));
 }
 
 void warmest_coldest_over_a_year(const std::vector<Measurement>& data, const std::string& output_filename) {
@@ -99,6 +121,8 @@ void warmest_coldest_over_a_year(const std::vector<Measurement>& data, const std
   coldest_days_histogram->SetFillColor(kBlue);
   coldest_days_histogram->SetLineColor(kRed);  // Set line color to red (optional)
   coldest_days_histogram->SetLineWidth(0);      // Remove outline (set line width to 0)
+  warmest_days_histogram->SetStats(0);
+  coldest_days_histogram->SetStats(0);
 
   //Create maps to store data
   std::unordered_map<std::string, double> warmest_days_val;
@@ -179,7 +203,37 @@ void warmest_coldest_over_a_year(const std::vector<Measurement>& data, const std
   //Draw the histograms
   TCanvas* canvas = new TCanvas("warmest_coldest_canvas", "Warmest and Coldest days Histogram", 800, 600);
   warmest_days_histogram->Draw("HIST SAME"); // Draw warmest days histogram
-  coldest_days_histogram->Draw("HIST SAME"); // Draw coldest days histogram
+  coldest_days_histogram->Draw("HIST SAME"); // Draw coldest days histogram 
+  
+  //Create histogram for the warm Gaussian
+  TF1* warm_gaussian_fit = new TF1("Gaussian", Gaussian, 80, 320, 3);  // Gaussian fit function with parameters
+  warm_gaussian_fit->SetParameters(20, 200, 100);  // Initial guesses for parameters (amplitude, mean, sigma) 
+  warm_gaussian_fit->SetLineColor(kBlack);
+
+  //Create histogram for the cold Gaussian
+  // DOES NOT WORK CURRENTLY
+  //TF1* cold_gaussian_fit_1 = new TF1("Gaussian", Gaussian, 300, 100, 3);  // Gaussian fit function with parameters
+ 
+  //cold_gaussian_fit_1->SetParameters(20, 20, 100);  // Initial guesses for parameters (amplitude, mean, sigma)
+  //cold_gaussian_fit_1->SetLineColor(kBlue);
+
+  // Fit warmest days histogram with Gaussian and print results
+  warmest_days_histogram->Fit(warm_gaussian_fit, "Q+");  // Fit without verbose output
+  //coldest_days_histogram->Fit(cold_gaussian_fit_1, "Q+");
+  std::cout << "The mean of the warmest days is " << warm_gaussian_fit->GetParameter(1) << std::endl;
+  std::cout << "Its uncertainty of the warmest days is " << warm_gaussian_fit->GetParError(1) << std::endl;
+
+  warm_gaussian_fit->Draw("HIST SAME");
+  //cold_gaussian_fit_1->Draw("HIST SAME"); 
+
+  //Create a legend
+  TLegend* legend = new TLegend(0.7, 0.7, 0.9, 0.9);
+  legend->SetTextSize(0.03);
+  legend->AddEntry(warmest_days_histogram, "Warmest days", "f");
+  legend->AddEntry(coldest_days_histogram, "Coldest days", "f");
+  legend->AddEntry(warm_gaussian_fit, "Gaussian Fit", "l");
+  legend->Draw();
+
   canvas->SaveAs("warmest_coldest_histogram.png"); // Save as PNG
 
   //Clean up
