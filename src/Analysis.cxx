@@ -1,9 +1,8 @@
 #include "Analysis.h"
 #include "Measurement.h"
-#include <iostream>
 
-#include <TFile.h>
-#include <TH1D.h>
+//#include <TFile.h>
+//#include <TH1D.h>
 #include <TCanvas.h>
 
 
@@ -83,6 +82,9 @@ void fill_histogram_with_vector(TH1D* histogram, const std::vector<double>& data
         histogram->Fill(value); // Fill histogram with each value from the vector
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void warmest_coldest_over_a_year(const std::vector<Measurement>& data, const std::string& output_filename) {
   
@@ -190,12 +192,85 @@ void warmest_coldest_over_a_year(const std::vector<Measurement>& data, const std
 }
 
 
-void some_other_analysis(const std::vector<Measurement>& ,
-                         const std::string& ) {
-  std::cout << "Here we could implement the code for a third analysis!"
-            << std::endl;
-  std::cout << "You could consider using a different translation unit for this "
-               "to make it easier to work on the different analyzes "
-               "independently in git!"
-            << std::endl;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// How many warm days (>25 degrees) there are in a year over the years, to she if the temperatures have increased over the years 
+
+
+void days_above_25_degrees(const std::vector<Measurement>& data, const std::string& output_filename) {
+
+    TFile output_file{output_filename.c_str(), "RECREATE"};
+
+    // Here we are creating a map to store the number of days above 25 degrees for each year
+    std::unordered_map<int, int> days_above_25_per_year;
+    // This is a set that will help us only adding one count per day
+    std::unordered_set<std::string> processed_dates;
+
+    // This is a For-loop that loops through all the data in measurement
+    for (const auto& measurement : data) {
+
+        // The convertion "YYYY-MM-DD" date a string
+        std::string date_str = date::format("%F", measurement.get_date());
+        std::istringstream in(date_str.c_str());
+        date::year_month_day ymd;
+        in >> date::parse("%F", ymd);
+
+        // Creates an integer of the year
+        int year = static_cast<int>(ymd.year());
+
+        // Seeing if the temperature is above 25 and check if the date has been counted towards the number of days yet 
+        // .end() is just way of saying not found
+        if (measurement.get_temperature() > 25 && processed_dates.find(date_str) == processed_dates.end()) {
+            // Add the date to the set 
+            processed_dates.insert(date_str);
+
+            // std::cout << date_str <<std::endl;
+
+            // Adding the count to our map
+            days_above_25_per_year[year]++;
+        }
+    }
+
+    // Determine the range of years for the histogram x-axis
+
+    // Integer placeholder for the minimum and maximum
+    int min_year = days_above_25_per_year.begin()->first;
+    int max_year = days_above_25_per_year.begin()->first;
+
+    // Here we are looping through the years to find the minimum/maximum and adding it to our integers
+    for (const auto& year_temp_pair : days_above_25_per_year) {
+        min_year = std::min(min_year, year_temp_pair.first);
+        max_year = std::max(max_year, year_temp_pair.first);
+    }
+
+    // Finding the range of years
+    int num_years = max_year - min_year + 2;
+
+    // Creating the histogram for the number of days above 25 degrees per year
+    TH1D* days_above_25_histogram = new TH1D{"days_above_25_histogram", "Days Above 25 Degrees Per Year;Year;Number of days", num_years, min_year - 1.0, max_year + 1.0};
+
+    // Fill the histogram with the number of days for each year
+    for (const auto& year_temp_pair : days_above_25_per_year) {
+        // .first is the key so our year
+        int year = year_temp_pair.first;
+        // .second is the value in the map corresponding to the key, so the number of days over 25 degrees
+        int count = year_temp_pair.second;
+        // This is filling the histogram
+        days_above_25_histogram->Fill(year, count);
+    }
+
+
+    // Draw the histogram
+    TCanvas* canvas = new TCanvas("above_25_per_year_canvas", "Days Above 25 Degrees Per Year Histogram", 800, 600);
+    days_above_25_histogram->SetFillColor(kPink-8);
+    days_above_25_histogram->SetLineColor(kPink-8);
+    days_above_25_histogram->SetStats(0);
+    days_above_25_histogram->Draw("HIST");
+    canvas->SaveAs("days_above_25_per_year_histogram.png"); // Save as PNG
+
+    // Clean up
+    delete canvas;
+
+    // Close the output file
+    output_file.Close();
 }
