@@ -87,6 +87,8 @@ int main(int, char* argv[]) {
     }
     case 1: {
       // Analysis 1
+      std::string name = "mean_temp.root";
+      mean_temp_over_a_year(data, name);
       break;
     }
     case 2: {

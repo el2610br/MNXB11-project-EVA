@@ -8,11 +8,9 @@
 
 //Creating a histogram to plot the mean temperature over a year
 void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::string& output_filename) {
-  // Note: We need .c_str() because TFile expects a C-string (i.e. a char*)
-  // but output_filename is a std::string
-  // Note: We use UPDATE here rather than RECREATE so that we can add new
-  // histograms if we already created the file with the raw data. 
+
   TFile output_file{output_filename.c_str(), "RECREATE"};
+  
   TH1D* meantemp_histogram{new TH1D{"meantemp_histogram", "Mean Daily Temperature over a Year;Day of Year;Temperature [°C]", 365, 0, 366}};
 
   //Create arrays to store data
@@ -23,6 +21,7 @@ void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::stri
   std::vector<int> daily_temp_sum_sq(365, 0);
 
   for (const auto& measurement : data) {
+    
     //conversion of "YYYY-MM-DD" to numbers from 1 to 365 (does not account for leap years, I think)
     std::string date_str = date::format("%F", measurement.get_date());
     std::istringstream in(date_str.c_str());
@@ -30,24 +29,26 @@ void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::stri
     in >> date::parse("%F", ymd);
     int day_of_year = (date::sys_days{ymd} - date::sys_days{date::year{ymd.year()}/1/1}).count();
     
-    //daily_temp_sum[day_of_year] += measurement.get_temperature();
-    //daily_temp_count[day_of_year] += 1;
-
-    //date_histogram->Fill(measurement.get_date());
-    //date_histogram->Fill(day_of_year +1)
-    //temperature_histogram->Fill(measurement.get_temperature());
-
-    if (day_of_year >= 0 && day_of_year < 365) {
-      double temp = measurement.get_temperature();  
-      daily_temp_sum[day_of_year] += temp;
-      daily_temp_sum_sq[day_of_year] += temp * temp;
-      daily_temp_count[day_of_year] += 1;     
+    //Check that the date is valid
+    if (day_of_year < 0 || day_of_year > 365) {
+      std::cerr << "Invalid date: " << day_of_year << std::endl;
+      continue;
     }
+
+    //Check that the temp is valid
+    if (measurement.get_temperature() < -50 || measurement.get_temperature() > 50) {
+      std::cerr << "Invalid temperature data: " << measurement.get_temperature() << std::endl;
+      continue;
+    }    
+    
+    double temp = measurement.get_temperature();  
+    daily_temp_sum[day_of_year] += temp;
+    daily_temp_sum_sq[day_of_year] += temp * temp;
+    daily_temp_count[day_of_year] += 1;     
+  
 
   for (int day = 0; day < 365; ++day) {
     if (daily_temp_count[day] > 0) {
-      //double mean_temperature = daily_temp_sum[day] / daily_temp_count[day];
-      //meantemp_histogram->SetBinContent(day + 1, mean_temperature);  // day + 1 for 1-based day-of-year
       double mean_temperature = daily_temp_sum[day] / daily_temp_count[day];
       double mean_temp_sq = daily_temp_sum_sq[day] / daily_temp_count[day];
       double variance = mean_temp_sq - mean_temperature * mean_temperature;
@@ -57,14 +58,20 @@ void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::stri
       meantemp_histogram->SetBinError(day + 1, stddev); // Set standard deviation as the error    
     }
   }
+  }
+  
+  TCanvas* canvas = new TCanvas("mean_temp_canvas", "Mean temperature over a year", 800, 600);
+  meantemp_histogram->Draw();
 
-  //customize the histogram still
+  canvas->SaveAs("mean_temperature_over_a_year.png"); // Save as PNG
 
-  meantemp_histogram->Write();
+  //Clean up
+  delete canvas;
 
   //Closes the output file
+  //output_file.Write();
   output_file.Close();
-  }
+  
 }
 
 
