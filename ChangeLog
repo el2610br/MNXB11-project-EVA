@@ -45,6 +45,7 @@
 
         Fixed the mean temperature over a year analysis, producing the same plot as was given to us. Calling the function in main.cxx and Analysis.h now. Using Root to create the histogram. Fixed the fact, that no histogram was produced in the earlier version by creating TCanvas. Included the same temperature and date validation as Andreas.
 
+
 2024-10-30 18:00 Ellen
 
         Finished the last analysis which takes the number of days over one year and plots it over all years. Also adding the function in Analysis.h. Laslty I called the function in the main.cxx in case 3. 
@@ -61,3 +62,9 @@
 2024-10-31 15:50 Ellen
 
         Adding the zero case in main.cxx, where it is doing all the analysises. Cleaning up in Dataextraction.cxx and annotating the cleaning function. 
+
+2024-10-30 16:50 Verena
+
+        Analysis 1: annotated the code, changed the colors in the plot, disabled the statistics box. Fixed the degree Celcius display in the y-axis label.
+
+        Analysis 2: Added a Gaussian fitting function. Works fo the warm days, but for the cold days, the interval determination does not work, so it is not included. Added a legend to the plot. Removed the filled_histogram_with_vector function as it was not needed.
