@@ -68,3 +68,7 @@
         Analysis 1: annotated the code, changed the colors in the plot, disabled the statistics box. Fixed the degree Celcius display in the y-axis label.
 
         Analysis 2: Added a Gaussian fitting function. Works fo the warm days, but for the cold days, the interval determination does not work, so it is not included. Added a legend to the plot. Removed the filled_histogram_with_vector function as it was not needed.
+
+2024-10-31 20:40 Verena
+
+        Updated the README.md to include all the information to describe the project.
