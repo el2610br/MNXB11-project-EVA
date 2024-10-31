@@ -74,7 +74,15 @@ int main(int, char* argv[]) {
 
   switch(analysis_choice) {
     case 0: {
-      // The case where we don't specify analysis
+      // All analysises
+      //std::string name1 = "mean_temp.root";
+      //mean_temp_over_a_year(data,name1);
+
+      std::string name2 = "25_degrees.root";
+      days_above_25_degrees(data,name2);
+
+      std::string name3 = "warmest_coldest.root";
+      warmest_coldest_over_a_year(data, name3);
       break;
     }
     case 1: {
@@ -92,6 +100,8 @@ int main(int, char* argv[]) {
     }
     case 3: {
       // Analysis 3
+      std::string name = "25_degrees.root";
+      days_above_25_degrees(data,name);
       break;
     }
 

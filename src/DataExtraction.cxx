@@ -2,6 +2,7 @@
 #include "Measurement.h"
 #include "date.h"
 
+// This function is calling the smhicleaner,sh to clean file_name
 std::string cleaning(std::string file_name){
   const char* path = "~/git/MNXB11-project-EVA/datasets/smhicleaner.sh ~/git/MNXB11-project-EVA/datasets/";
 
@@ -9,8 +10,10 @@ std::string cleaning(std::string file_name){
 
   const char* cleaner_path = combined.c_str(); 
 
+  // Here it is calling the Bash script
   system(cleaner_path);
 
+  // And creating the string that is the name of the new cleaned file
   std::string new_string= "baredata_" + file_name;
 
   return new_string;
@@ -60,29 +63,3 @@ std::vector<Measurement> read_csv(std::string file_name){
   return measurements;
 }
 
-/*
-
-
-std::vector<Measurement> read_measurements(const std::string& file_name) {
-    // This code is WRONG! Can you spot the problems? It isn't easy, which is why
-    // one of the reasons you don't want to write this kind of code yourself.
-    std::ifstream file{file_name};
-    std::vector<Measurement> measurements;
-    // Declaring a bunch of variables in advance, not good practice! Use a library
-    // for reading CSV!
-    int year, month, day, hour, minute, second, id;
-    double signal, background, value;
-    std::string header;
-    // Assume first line is a header, read it first before we get the actual data
-    std::getline(file, header);
-
-  for (const auto measurement : measurements) {
-    id = measurement.get_id();
-    background = measurement.get_background();
-    signal = measurement.get_signal();
-    tree.Fill();
-  }
-  tree.Write();
-}
-
-*/
