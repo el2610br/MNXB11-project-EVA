@@ -96,7 +96,6 @@ void mean_temp_over_a_year(const std::vector<Measurement>& data, const std::stri
 
   //Closes the output file
   output_file.Close();
-  
 }
 
 //Analysis 2
