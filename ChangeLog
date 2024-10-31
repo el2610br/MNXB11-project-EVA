@@ -40,3 +40,20 @@
 
         Added a second analysis that finds the warmest and coldest days of each year, draws it on a canvas
         with a histogram and saves it in a png.
+
+2024-10-30 18:00 Ellen
+
+        Finished the last analysis which takes the number of days over one year and plots it over all years. Also adding the function in Analysis.h. Laslty I called the function in the main.cxx in case 3. 
+
+
+2024-10-31 11:52 Ellen
+
+        Annotation the third Analysis and making small changes, like the color of the plot! 
+
+2024-10-31 13:35 Ellen
+
+        Realised that the data has multiple values on every day, meaning that the code written before was a bit wrong. So I changed it so that it only adds on count per day that was above 25 and not for more. And then I annotated the new parts. 
+
+2024-10-31 15:50 Ellen
+
+        Adding the zero case in main.cxx, where it is doing all the analysises. Cleaning up in Dataextraction.cxx and annotating the cleaning function. 

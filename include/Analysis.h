@@ -15,6 +15,6 @@ void signal_and_background(const std::vector<Measurement>& measurements,
 
 void warmest_coldest_over_a_year(const std::vector<Measurement>& measurements, const std::string& output_filename);
 
-void some_other_analysis(const std::vector<Measurement>& measurements,
+void days_above_25_degrees(const std::vector<Measurement>& measurements,
                          const std::string& output_filename);
 #endif /* ANALYSIS_H */
